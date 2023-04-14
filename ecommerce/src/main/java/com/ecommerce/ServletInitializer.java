@@ -1,4 +1,4 @@
-package com.ecommerce.demo;
+package com.ecommerce;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

@@ -3,6 +3,7 @@ package com.ecommerce.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.entity.Order;
@@ -11,6 +12,7 @@ import com.ecommerce.entity.ShoppingCart;
 import com.ecommerce.repository.OrderRepository;
 import com.ecommerce.repository.ProductRepository;
 
+@Component
 @Service
 public class OrderService {
 
