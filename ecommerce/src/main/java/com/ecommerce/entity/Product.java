@@ -13,7 +13,7 @@ public class Product {
     }
 
     @Id
-    @GeneratedValue
+//    @GeneratedValue
     private int id;
     private String name;
     private int availableQuantity;

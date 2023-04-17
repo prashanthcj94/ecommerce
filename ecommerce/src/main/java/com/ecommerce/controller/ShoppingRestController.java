@@ -5,20 +5,24 @@ import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ecommerce.dto.OrderDTO;
 import com.ecommerce.dto.ResponseOrderDTO;
 import com.ecommerce.entity.Customer;
 import com.ecommerce.entity.Order;
 import com.ecommerce.entity.Product;
+import com.ecommerce.repository.ProductRepository;
 import com.ecommerce.service.CustomerService;
 import com.ecommerce.service.OrderService;
 import com.ecommerce.service.ProductService;
@@ -26,11 +30,13 @@ import com.ecommerce.util.DateUtil;
 
 
 @Component
-@RestController
-@RequestMapping("/api")
+@Controller
 public class ShoppingRestController {
 	
 
+	@Autowired
+	ProductRepository productRepo;
+	
     private OrderService orderService;
     private ProductService productService;
     private CustomerService customerService;
@@ -52,11 +58,22 @@ public class ShoppingRestController {
         return ResponseEntity.ok(productList);
     }
     
-    @GetMapping(value = "/getOrder/{orderId}")
+    @RequestMapping("getOrder/{orderId}")
     public ResponseEntity<Order> getOrderDetails(@PathVariable int orderId) {
 
         Order order = orderService.getOrderDetail(orderId);
         return ResponseEntity.ok(order);
+    }
+    
+    @RequestMapping("addingProduct")
+    public ModelAndView product() {
+    	return new ModelAndView("addingProduct");
+    }
+    
+    @RequestMapping(value = "addProduct", method = RequestMethod.POST)
+    public ModelAndView addProduct(Product product) {
+    	productRepo.save(product);
+    	return new ModelAndView("addingProduct");
     }
 
 
@@ -84,8 +101,6 @@ public class ShoppingRestController {
         responseOrderDTO.setInvoiceNumber(new Random().nextInt(1000));
         responseOrderDTO.setOrderId(order.getId());
         responseOrderDTO.setOrderDescription(orderDTO.getOrderDescription());
-
-        logger.info("test push..");
 
         return ResponseEntity.ok(responseOrderDTO);
     }
